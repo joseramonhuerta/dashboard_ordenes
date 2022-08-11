@@ -160,6 +160,63 @@ class SolicitudesModel extends Mysql
 		return $request;
 	}	
 
+	public function getReporteRecibidosEntregados(string $fechainicio,  string $fechafin){
+		$sql = "SELECT  o.id_orden_servicio, CAST(DATE_FORMAT(o.fecha,'%d/%m/%Y') AS CHAR) AS fecha, o.nombre_equipo, IFNULL(c.nombre_usuario, 'NO ASIGNADO') AS nombre_usuario,
+		CASE o.status_servicio WHEN 1 THEN 'RECIBIDO' WHEN 2 THEN 'EN REVISIÓN' WHEN 3 THEN 'COTIZADO' WHEN 4 THEN 'EN REPARACIÓN' WHEN 5 THEN 'REPARADO' WHEN 6 THEN 'ENTREGADO' WHEN 7 THEN 'DEVOLUCION' END AS status_servicio_descripcion
+		FROM ordenes_servicio o
+		LEFT JOIN cat_usuarios c ON c.id_usuario = o.id_tecnico
+		WHERE o.fecha BETWEEN '$fechainicio' AND '$fechafin'
+		ORDER BY o.fecha";
+
+		$request = $this->select_all($sql);
+
+		return $request;
+	}
+
+	public function getReporteRecibidosEntregadosGrafica(string $fechainicio,  string $fechafin){
+		$sql = "SELECT CAST(DATE_FORMAT(fecha,'%d/%m/%Y') AS CHAR) AS fecha,COUNT(id_orden_servicio) AS cantidad,0 AS importe, 1 AS tipo FROM ordenes_servicio
+		WHERE fecha BETWEEN '$fechainicio' AND '$fechafin' 
+		GROUP BY fecha
+		UNION ALL
+		SELECT CAST(DATE_FORMAT(fecha_entrega,'%d/%m/%Y') AS CHAR) AS fecha,COUNT(id_orden_servicio) AS cantidad,SUM(CASE status_servicio WHEN 6 THEN importe_presupuesto ELSE 0 END) AS importe,2 AS tipo FROM ordenes_servicio
+		WHERE fecha_entrega BETWEEN '$fechainicio' AND '$fechafin' 
+		GROUP BY fecha_entrega";
+
+		$request = $this->select_all($sql);
+
+		return $request;
+
+	}
+
+	public function getReporteRecibidos(string $fechainicio,  string $fechafin){
+		$sql = "SELECT  o.id_orden_servicio, CAST(DATE_FORMAT(o.fecha,'%d/%m/%Y') AS CHAR) AS fecha, o.nombre_equipo, IFNULL(c.nombre_usuario, 'NO ASIGNADO') AS nombre_usuario,
+		CASE o.status_servicio WHEN 1 THEN 'RECIBIDO' WHEN 2 THEN 'EN REVISIÓN' WHEN 3 THEN 'COTIZADO' WHEN 4 THEN 'EN REPARACIÓN' WHEN 5 THEN 'REPARADO' WHEN 6 THEN 'ENTREGADO' WHEN 7 THEN 'DEVOLUCION' END AS status_servicio_descripcion
+		FROM ordenes_servicio o
+		LEFT JOIN cat_usuarios c ON c.id_usuario = o.id_tecnico
+		WHERE o.fecha BETWEEN '$fechainicio' AND '$fechafin'
+		ORDER BY o.fecha";
+
+		$request = $this->select_all($sql);
+
+		return $request;
+
+	}
+
+	public function getReporteEntregados(string $fechainicio,  string $fechafin){
+		$sql = "SELECT  o.id_orden_servicio, CAST(DATE_FORMAT(o.fecha,'%d/%m/%Y') AS CHAR) AS fecha, o.nombre_equipo, IFNULL(c.nombre_cliente, o.nombre_cliente) AS nombre_cliente,
+		CAST(DATE_FORMAT(o.fecha_entrega,'%d/%m/%Y') AS CHAR) AS fecha_entrega,
+		CASE o.status_servicio WHEN 1 THEN 'RECIBIDO' WHEN 2 THEN 'EN REVISIÓN' WHEN 3 THEN 'COTIZADO' WHEN 4 THEN 'EN REPARACIÓN' WHEN 5 THEN 'REPARADO' WHEN 6 THEN 'ENTREGADO' WHEN 7 THEN 'DEVOLUCION' END AS status_servicio_descripcion
+		FROM ordenes_servicio o
+		LEFT JOIN cat_clientes c ON c.id_cliente = o.id_cliente
+		WHERE o.fecha_entrega BETWEEN '$fechainicio' AND '$fechafin' AND o.status_servicio IN (6,7)
+		ORDER BY o.fecha_entrega";
+
+		$request = $this->select_all($sql);
+
+		return $request;
+
+	}
+
 
 }
 

@@ -217,6 +217,78 @@ class Solicitudes extends Controllers
 		die();
 	}
 
+	public function getReporteRecibidosEntregadosGrafica(){
+		if($_POST){
+			$fechainicio = date_create_from_format('d/m/Y', $_POST['txtFechaInicio']);
+            $fechainicio = date_format($fechainicio, 'Y-m-d');           
+            $fechainicio.= ' 00:00:00';
+
+            $fechafin = date_create_from_format('d/m/Y', $_POST['txtFechaFin']);
+            $fechafin = date_format($fechafin, 'Y-m-d');     
+            $fechafin.= ' 23:59:59';
+
+			$arrData = $this->model->getReporteRecibidosEntregadosGrafica($fechainicio, $fechafin);
+
+			if(empty($arrData)){
+				$arrResponse = array('success' => false, 'msg' => 'No se encontraron datos.');
+			}else{	
+				$arrResponse = array('success' => true, 'data' => $arrData);
+			}
+
+			echo json_encode($arrResponse, JSON_UNESCAPED_UNICODE);
+
+		}
+		die();
+	}
+
+	public function getReporteRecibidos(){
+		if($_POST){
+			$fechainicio = date_create_from_format('d/m/Y', $_POST['txtFechaInicio']);
+            $fechainicio = date_format($fechainicio, 'Y-m-d');           
+            $fechainicio.= ' 00:00:00';
+
+            $fechafin = date_create_from_format('d/m/Y', $_POST['txtFechaFin']);
+            $fechafin = date_format($fechafin, 'Y-m-d');     
+            $fechafin.= ' 23:59:59';
+
+			$arrData = $this->model->getReporteRecibidos($fechainicio, $fechafin);
+
+			if(empty($arrData)){
+				$arrResponse = array('success' => false, 'msg' => 'No se encontraron datos.');
+			}else{	
+				$arrResponse = array('success' => true, 'data' => $arrData);
+			}
+
+			echo json_encode($arrResponse, JSON_UNESCAPED_UNICODE);
+
+		}
+		die();
+	}
+
+	public function getReporteEntregados(){
+		if($_POST){
+			$fechainicio = date_create_from_format('d/m/Y', $_POST['txtFechaInicio']);
+            $fechainicio = date_format($fechainicio, 'Y-m-d');           
+            $fechainicio.= ' 00:00:00';
+
+            $fechafin = date_create_from_format('d/m/Y', $_POST['txtFechaFin']);
+            $fechafin = date_format($fechafin, 'Y-m-d');     
+            $fechafin.= ' 23:59:59';
+
+			$arrData = $this->model->getReporteEntregados($fechainicio, $fechafin);
+
+			if(empty($arrData)){
+				$arrResponse = array('success' => false, 'msg' => 'No se encontraron datos.');
+			}else{	
+				$arrResponse = array('success' => true, 'data' => $arrData);
+			}
+
+			echo json_encode($arrResponse, JSON_UNESCAPED_UNICODE);
+
+		}
+		die();
+	}
+
 }
 
 
