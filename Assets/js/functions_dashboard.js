@@ -114,6 +114,8 @@ function obtenerGraficas(){
                 if(!cargaAutomatica)
                     swal("Atención", objData.msg, "error");							
             }
+
+            
         }else{
             if(!cargaAutomatica)
                 swal("Atención","Error en el proceso", "error");

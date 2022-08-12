@@ -89,11 +89,7 @@
                       </thead>
                       <tbody>
                         <tr>
-                          <td>1</td>
-                          <td>01/01/2000</td>
-                          <td>Horno</td>
-                          <td>No Asignado</td>
-                          <td>Recibido</td>
+                          
                         </tr>
                       </tbody>
                     </table>
@@ -130,12 +126,7 @@
                       </thead>
                       <tbody>
                         <tr>
-                          <td>1</td>
-                          <td>01/01/2000</td>
-                          <td>Horno</td>
-                          <td>Ramon Huerta</td>
-                          <td>02/01/2000</td>
-                          <td>Entregado</td>                          
+                                                
                         </tr>
                       </tbody>
                     </table>
